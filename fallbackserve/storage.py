@@ -42,7 +42,10 @@ class FallbackStorage(FileSystemStorage):
         fallback_server = settings.FALLBACK_STATIC_URL
         auth_user = getattr(settings, 'FALLBACK_STATIC_URL_USER', None)
         auth_pass = getattr(settings, 'FALLBACK_STATIC_URL_PASS', None)
-        fq_url = '%s%s' % (fallback_server, name)
+        if settings.MEDIA_URL.startswith('http://'):
+            fq_url = '%s/%s' % (settings.MEDIA_URL.rstrip('/'), name)
+        else:
+            fq_url = '%s/%s' % (fallback_server.rstrip('/'), name)
         print "FallbackStorage: trying to fetch from %s" % fq_url
         try:
             handlers = []
