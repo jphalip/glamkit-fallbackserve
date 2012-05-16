@@ -47,10 +47,7 @@ class FallbackStorage(FileSystemStorage):
         if settings.MEDIA_URL.startswith('http://'):
             fq_url = '%s/%s' % (settings.MEDIA_URL.rstrip('/'), name)
         else:
-            fq_url = '%s/%s/%s' % (
-                fallback_server.rstrip('/'),
-                settings.MEDIA_URL.rstrip('/'),
-                name)
+            fq_url = '%s/%s' % (fallback_server.rstrip('/'), name)
         print "FallbackStorage: trying to fetch from %s" % fq_url
         try:
             handlers = []
