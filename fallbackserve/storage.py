@@ -1,8 +1,11 @@
-from django.core.files.storage import FileSystemStorage
-from django.core.files.base import ContentFile
-import urllib2
 import os
+import urllib
+import urllib2
+
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
+from django.utils.encoding import smart_str
 
 
 class FallbackStorage(FileSystemStorage):
@@ -45,9 +48,11 @@ class FallbackStorage(FileSystemStorage):
         if name.startswith(settings.MEDIA_ROOT):
             name = name[len(settings.MEDIA_ROOT):].lstrip('/')
         if settings.MEDIA_URL.startswith('http://'):
-            fq_url = '%s/%s' % (settings.MEDIA_URL.rstrip('/'), name)
+            media_server = settings.MEDIA_URL.rstrip('/')
         else:
-            fq_url = '%s/%s' % (fallback_server.rstrip('/'), name)
+            media_server = fallback_server.rstrip('/')
+        # Convert the filename into bytes (if it's Unicode) and escape chars
+        fq_url = '%s/%s' % (media_server, urllib.quote(smart_str(name)))
         print "FallbackStorage: trying to fetch from %s" % fq_url
         try:
             handlers = []
