@@ -107,7 +107,7 @@ def serve(request, path, document_root=None, show_indexes=False, cache=True,
             path = request.path_info
             if path.startswith(settings.MEDIA_URL):
                 path = path[len(settings.MEDIA_URL):]
-            fq_url = '%s%s' % (fallback_server, path)
+            fq_url = '%s%s' % (fallback_server, urllib.quote(path))
             print "fallback_serve: trying to fetch from %s" % fq_url
             try:
                 handlers = []
