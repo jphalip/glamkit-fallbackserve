@@ -29,17 +29,6 @@ class FallbackStorage(FileSystemStorage):
                 raise
 
 
-    def path(self, name):
-        """you want my path, sure but i'll fetch it if it doesn't exist"""
-        p = super(FallbackStorage, self).path(name)
-        if not self._fetching and not os.path.exists(p):
-            try:
-                self.fetch_remote(name)
-            except Exception, e:
-                pass # ignore
-        return p
-
-
     def fetch_remote(self, name):
         self._fetching = True
         fallback_server = settings.FALLBACK_STATIC_URL
