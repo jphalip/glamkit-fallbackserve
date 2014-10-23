@@ -124,8 +124,8 @@ def serve(request, path, document_root=None, show_indexes=False, cache=True,
             else:
                 # Found the doc. Return it to response.
                 mimetype = mimetypes.guess_type(fq_url)
-                response = HttpResponse(contents, mimetype=mimetype[0])
-                
+                response = HttpResponse(contents, content_type=mimetype[0])
+
                 # Do we need to cache the file?
                 if cache:
                     if not os.path.exists(os.path.split(fullpath)[0]):
